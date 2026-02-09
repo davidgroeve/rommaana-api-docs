@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rommaana API | Developer Reference</title>
+    <meta name="description"
+        content="Official API Documentation for Rommaana Insurtech Platform - Interconnecting Insurance in Saudi Arabia.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@500;700;900&family=Fira+Code&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <span class="logo-text">ROMMAANA</span>
+            </div>
+
+            <nav>
+                <div class="nav-section">
+                    <p class="nav-label">General</p>
+                    <a href="#getting-started" class="nav-link active">Getting Started</a>
+                    <a href="#security" class="nav-link">Security</a>
+                    <a href="#authentication" class="nav-link">Authentication</a>
+                </div>
+
+                <div class="nav-section">
+                    <p class="nav-label">Guides</p>
+                    <a href="#implementation" class="nav-link">Implementation Notes</a>
+                    <a href="#limits-errors" class="nav-link">Limits & Errors</a>
+                    <a href="#versioning" class="nav-link">Versioning</a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    API Status: Online
+                </div>
+            </header>
+
+            <div class="content-inner">
+                <!-- Hero Section -->
+                <section id="hero" class="hero">
+                    <h1>Developer <br><span style="color: var(--primary);">Reference</span></h1>
+                    <p class="subtitle">Integrate with Saudi Arabia's premier Insurtech network. Interconnecting
+                        insurers and partners with a unified, secure API.</p>
+                    <!-- Decorative Abstract Element (Replacing generated image due to local environment limits) -->
+                    <div class="hero-decorative-block">
+                        <div class="glow-sphere"></div>
+                        <div class="network-lines"></div>
+                    </div>
+                </section>
+
+                <!-- 1. Getting Started -->
+                <section id="getting-started">
+                    <h2>1. Getting Started</h2>
+                    <p>The Rommaana API is organized around REST. Our API has predictable resource-oriented URLs,
+                        accepts JSON bodies, and uses standard HTTP response codes.</p>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Environment</th>
+                                    <th>Endpoint URL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Production</td>
+                                    <td><code>https://api.rommaana.com</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Staging</td>
+                                    <td><code>https://api.staging.rommaana.com</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 1.1 Security -->
+                <section id="security">
+                    <h2>1.1 Security</h2>
+                    <p>Rommaana prioritizes the security of insurance data. All API communication must happen over
+                        HTTPS.</p>
+                    <h3>Signing Algorithm</h3>
+                    <p>All tokens are signed using <strong>RS256</strong>. Verify signatures via our public JWKS:</p>
+                    <pre><code>GET /api/v1/auth/.well-known/jwks.json</code></pre>
+
+                    <h3>Authentication Context (ACR)</h3>
+                    <p>Certain operations require specific assurance levels:</p>
+                    <ul>
+                        <li><strong>AAL1</strong>: Basic Email/Password</li>
+                        <li><strong>AAL2</strong>: Multi-Factor Authentication (MFA)</li>
+                    </ul>
+                </section>
+
+                <!-- 1.2 Authentication -->
+                <section id="authentication">
+                    <h2>1.2 Authentication</h2>
+                    <p>We use a tiered token architecture to balance security and usability.</p>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Token</th>
+                                    <th>Name</th>
+                                    <th>Scope</th>
+                                    <th>Lifetime</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>TST</strong></td>
+                                    <td>Tenant-Scoped</td>
+                                    <td>Tenant operations</td>
+                                    <td>15 Minutes</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>RST</strong></td>
+                                    <td>Resource-Scoped</td>
+                                    <td>Specific resource</td>
+                                    <td>5 Minutes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Login Example</h3>
+                    <pre><code>POST /api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "partner@example.com",
+  "password": "your-secure-password"
+}</code></pre>
+                </section>
+
+                <!-- 1.3 Implementation Notes -->
+                <section id="implementation">
+                    <h2>1.3 General Implementation Notes</h2>
+                    <p>All API responses follow a standard JSON envelope for consistency.</p>
+                    <pre><code>{
+  "status": "success",
+  "message": "Operation successful",
+  "data": { ... },
+  "timestamp": "2026-02-09T11:48:00Z"
+}</code></pre>
+                    <ul>
+                        <li><strong>Naming</strong>: Fields use <code>camelCase</code>.</li>
+                        <li><strong>IDs</strong>: All resource IDs are <code>UUID v4</code>.</li>
+                        <li><strong>Timestamps</strong>: All dates are <code>ISO 8601</code>.</li>
+                    </ul>
+                </section>
+
+                <!-- 1.4 Limits & Errors -->
+                <section id="limits-errors">
+                    <h2>1.4 Limits & Errors</h2>
+                    <p>Rate limits are applied at the identity level to ensure fairness.</p>
+                    <ul>
+                        <li><strong>General APIs</strong>: 60 requests/minute</li>
+                        <li><strong>Auth APIs</strong>: 10 requests/minute</li>
+                        <li><strong>Max Sessions</strong>: 5 concurrent sessions</li>
+                    </ul>
+
+                    <h3>Common Error Codes</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>invalid_tst</code></td>
+                                    <td>Token is malformed or invalid</td>
+                                </tr>
+                                <tr>
+                                    <td><code>acr_insufficient</code></td>
+                                    <td>Higher AAL level (MFA) required</td>
+                                </tr>
+                                <tr>
+                                    <td><code>role_not_authorized</code></td>
+                                    <td>Insufficient permissions</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 1.5 Versioning -->
+                <section id="versioning">
+                    <h2>1.5 Versioning</h2>
+                    <p>Rommaana uses URI-based versioning. Current major version is <strong>v1</strong>.</p>
+                    <p>Breaking changes result in a major version bump, while improvements are rolled out to the current
+                        version.</p>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
