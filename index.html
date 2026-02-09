@@ -302,6 +302,32 @@ Content-Type: application/json
   "quoteInput": { ... }
 }'</code></pre>
 
+                    <!-- Try It Out -->
+                    <div class="try-it-out-section" data-method="POST"
+                        data-url="http://localhost:8001/api/v1/quote/quickQuote">
+                        <div class="try-it-header">
+                            <h5>Try It Out</h5>
+                        </div>
+                        <div class="form-group">
+                            <label>Request Body (JSON)</label>
+                            <textarea class="form-control" rows="8">{
+  "lob": "Motor",
+  "productType": "Comprehensive",
+  "quoteInput": {
+    "vehicleValue": 50000,
+    "driverAge": 30
+  }
+}</textarea>
+                        </div>
+                        <button class="execute-btn">Execute</button>
+                        <div class="response-area">
+                            <div class="response-header">
+                                <span class="status-badge"></span>
+                            </div>
+                            <pre><code class="language-json"></code></pre>
+                        </div>
+                    </div>
+
                     <!-- Get Quote -->
                     <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
 
@@ -493,6 +519,21 @@ Content-Type: application/json
   'http://localhost:8001/api/v1/insurer/list' \
   -H 'accept: application/json'</code></pre>
 
+                    <!-- Try It Out -->
+                    <div class="try-it-out-section" data-method="GET"
+                        data-url="http://localhost:8001/api/v1/insurer/list">
+                        <div class="try-it-header">
+                            <h5>Try It Out</h5>
+                        </div>
+                        <button class="execute-btn">Execute</button>
+                        <div class="response-area">
+                            <div class="response-header">
+                                <span class="status-badge"></span>
+                            </div>
+                            <pre><code class="language-json"></code></pre>
+                        </div>
+                    </div>
+
                     <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
 
                     <h3>Create Insurer</h3>
@@ -561,6 +602,20 @@ Content-Type: application/json
                     <pre><code class="language-bash">curl -X 'GET' \
   'http://localhost:8001/health' \
   -H 'accept: application/json'</code></pre>
+
+                    <!-- Try It Out -->
+                    <div class="try-it-out-section" data-method="GET" data-url="http://localhost:8001/health">
+                        <div class="try-it-header">
+                            <h5>Try It Out</h5>
+                        </div>
+                        <button class="execute-btn">Execute</button>
+                        <div class="response-area">
+                            <div class="response-header">
+                                <span class="status-badge"></span>
+                            </div>
+                            <pre><code class="language-json"></code></pre>
+                        </div>
+                    </div>
                 </section>
             </div>
         </main>

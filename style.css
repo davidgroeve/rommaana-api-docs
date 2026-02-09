@@ -92,6 +92,7 @@ body::before {
     font-size: 1.5rem;
     font-weight: 800;
     background: var(--brand-gradient);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -1px;
@@ -323,4 +324,116 @@ code {
     .content-inner {
         padding: 2rem 1rem;
     }
+}
+
+/* Try It Out Console */
+.try-it-out-section {
+    margin-top: 1rem;
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+}
+
+.try-it-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.try-it-header h5 {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: var(--text-main);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.execute-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.execute-btn:hover {
+    background: #a8322e;
+}
+
+.execute-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.response-area {
+    margin-top: 1.5rem;
+    display: none;
+}
+
+.response-area.visible {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.response-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.status-badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-success {
+    background: rgba(152, 195, 121, 0.2);
+    color: #98c379;
+}
+
+.status-error {
+    background: rgba(224, 108, 117, 0.2);
+    color: #e06c75;
 }

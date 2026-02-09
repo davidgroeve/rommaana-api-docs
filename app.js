@@ -72,4 +72,89 @@ document.addEventListener('DOMContentLoaded', () => {
         section.classList.add('fade-in');
         observer.observe(section);
     });
+
+    // Try It Out Console Logic
+    const tryItSections = document.querySelectorAll('.try-it-out-section');
+
+    tryItSections.forEach(section => {
+        const executeBtn = section.querySelector('.execute-btn');
+        const responseArea = section.querySelector('.response-area');
+        const responseCodeBlock = responseArea.querySelector('code');
+        const statusBadge = responseArea.querySelector('.status-badge');
+        const textArea = section.querySelector('textarea');
+
+        executeBtn.addEventListener('click', async () => {
+            const method = section.dataset.method;
+            const url = section.dataset.url;
+            let body = null;
+            let headers = {
+                'Accept': 'application/json'
+            };
+
+            // Prepare Request
+            if (method === 'POST' || method === 'PUT') {
+                const rawBody = textArea ? textArea.value : '';
+                try {
+                    if (rawBody) {
+                        // Validate JSON
+                        body = JSON.stringify(JSON.parse(rawBody));
+                        headers['Content-Type'] = 'application/json';
+                    }
+                } catch (e) {
+                    alert('Invalid JSON in request body');
+                    return;
+                }
+            }
+
+            // UI Loading State
+            executeBtn.disabled = true;
+            executeBtn.textContent = 'Executing...';
+            // Hide previous response content but keep area if needed - actually simpler to hide first
+            responseArea.classList.remove('visible');
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: headers,
+                    body: body
+                });
+
+                const contentType = response.headers.get("content-type");
+                let data;
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    data = await response.json();
+                } else {
+                    data = await response.text();
+                }
+
+                // Update Status Badge
+                statusBadge.textContent = `${response.status} ${response.statusText}`;
+                statusBadge.className = 'status-badge ' + (response.ok ? 'status-success' : 'status-error');
+
+                // Update Response Body
+                if (typeof data === 'object') {
+                    responseCodeBlock.textContent = JSON.stringify(data, null, 2);
+                } else {
+                    responseCodeBlock.textContent = data;
+                }
+
+                // Show Result
+                responseArea.classList.add('visible');
+                responseArea.style.display = 'block';
+
+            } catch (error) {
+                // Network Error Handling
+                statusBadge.textContent = 'Network Error';
+                statusBadge.className = 'status-badge status-error';
+                responseCodeBlock.textContent = `Error: ${error.message}\nMake sure the API service is running on port 8001.`;
+
+                responseArea.classList.add('visible');
+                responseArea.style.display = 'block';
+            } finally {
+                // Reset Button
+                executeBtn.disabled = false;
+                executeBtn.textContent = 'Execute';
+            }
+        });
+    });
 });
