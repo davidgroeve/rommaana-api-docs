@@ -126,10 +126,12 @@ body::before {
     color: var(--primary);
 }
 
+/* Enhanced Card with Gradient Border */
 .nav-link.active {
-    background: var(--primary-glow);
-    color: var(--primary);
+    background: rgba(146, 39, 36, 0.15);
+    color: var(--text-main);
     border-left: 3px solid var(--primary);
+    position: relative;
 }
 
 /* Main Content */

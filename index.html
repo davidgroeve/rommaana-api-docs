@@ -38,6 +38,17 @@
                     <a href="#limits-errors" class="nav-link">Limits & Errors</a>
                     <a href="#versioning" class="nav-link">Versioning</a>
                 </div>
+
+                <div class="nav-section">
+                    <div class="nav-label">Insurance API</div>
+                    <a href="#quote" class="nav-link">Quote Operations</a>
+                    <a href="#travel-quote" class="nav-link">Travel Insurance</a>
+                    <a href="#visa-quote" class="nav-link">Visa Insurance</a>
+                    <a href="#home-quote" class="nav-link">Home Insurance</a>
+                    <a href="#payment" class="nav-link">Payment</a>
+                    <a href="#insurer" class="nav-link">Insurer Management</a>
+                    <a href="#health" class="nav-link">System Health</a>
+                </div>
             </nav>
         </aside>
 
@@ -206,6 +217,350 @@ Content-Type: application/json
                     <p>Rommaana uses URI-based versioning. Current major version is <strong>v1</strong>.</p>
                     <p>Breaking changes result in a major version bump, while improvements are rolled out to the current
                         version.</p>
+                </section>
+
+                <!-- 2. Insurance Products -->
+                <!-- 2. Quote Operations -->
+                <section id="quote">
+                    <h2>2. Quote Operations</h2>
+                    <p>Manage policy quotes including creation, binding, issuance, and retrieval.</p>
+
+                    <!-- List Quotes -->
+                    <h3>List Quotes</h3>
+                    <span class="badge badge-get">GET</span> <code class="language-http">/api/v1/quote/list</code>
+                    <p>Lists all quotes with policy and customer data. Supports pagination and filtering.</p>
+
+                    <h4>Parameters</h4>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>In</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>page</td>
+                                    <td>query</td>
+                                    <td>integer</td>
+                                    <td>No</td>
+                                    <td>Page number (default: 1)</td>
+                                </tr>
+                                <tr>
+                                    <td>page_size</td>
+                                    <td>query</td>
+                                    <td>integer</td>
+                                    <td>No</td>
+                                    <td>Items per page (default: 20)</td>
+                                </tr>
+                                <tr>
+                                    <td>status_filter</td>
+                                    <td>query</td>
+                                    <td>string</td>
+                                    <td>No</td>
+                                    <td>Filter by status (e.g., 'Q')</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'GET' \
+  'http://localhost:8001/api/v1/quote/list?page=1&page_size=20' \
+  -H 'accept: application/json'</code></pre>
+
+                    <!-- Quick Quote -->
+                    <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+                    <h3>Quick Quote</h3>
+                    <span class="badge badge-post">POST</span> <code
+                        class="language-http">/api/v1/quote/quickQuote</code>
+                    <p>Generate quick quotes for all active products matching the LOB and Product Type.</p>
+
+                    <h4>Request Body</h4>
+                    <pre><code class="language-json">{
+  "lob": "Motor",
+  "productType": "Comprehensive",
+  "quoteInput": {
+    "vehicleValue": 50000,
+    "driverAge": 30
+  }
+}</code></pre>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'POST' \
+  'http://localhost:8001/api/v1/quote/quickQuote' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "lob": "Motor",
+  "productType": "Comprehensive",
+  "quoteInput": { ... }
+}'</code></pre>
+
+                    <!-- Get Quote -->
+                    <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+                    <h3>Get Quote</h3>
+                    <span class="badge badge-get">GET</span> <code
+                        class="language-http">/api/v1/quote/{policy_id}</code>
+                    <p>Retrieve full details of a specific quote or policy.</p>
+
+                    <h4>Parameters</h4>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>In</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>policy_id</td>
+                                    <td>path</td>
+                                    <td>string (UUID)</td>
+                                    <td>Yes</td>
+                                    <td>Unique Policy ID</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'GET' \
+  'http://localhost:8001/api/v1/quote/{policy_id}' \
+  -H 'accept: application/json'</code></pre>
+
+                    <!-- Bind Quote -->
+                    <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+                    <h3>Bind Quote</h3>
+                    <span class="badge badge-post">POST</span> <code
+                        class="language-http">/api/v1/quote/bind/{policyId}</code>
+                    <p>Convert a quote to a bound policy.</p>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'POST' \
+  'http://localhost:8001/api/v1/quote/bind/{policyId}' \
+  -H 'accept: application/json' \
+  -d ''</code></pre>
+
+                    <!-- Issue Quote -->
+                    <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+                    <h3>Issue Policy</h3>
+                    <span class="badge badge-post">POST</span> <code
+                        class="language-http">/api/v1/quote/issue/{policyId}</code>
+                    <p>Issue a bound policy (requires payment).</p>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'POST' \
+  'http://localhost:8001/api/v1/quote/issue/{policyId}' \
+  -H 'accept: application/json' \
+  -d ''</code></pre>
+                </section>
+
+                <!-- 3. Travel Quote -->
+                <section id="travel-quote">
+                    <h2>3. Travel Insurance</h2>
+                    <p>Endpoints for creating and calculating premiums for Travel Insurance.</p>
+
+                    <h3>Create Quote</h3>
+                    <span class="badge badge-post">POST</span> <code
+                        class="language-http">/api/v1/quote/travel/create</code>
+                    <p>Creates a new travel insurance quote.</p>
+
+                    <h4>Request Body</h4>
+                    <pre><code class="language-json">{
+  "insurerId": "uuid",
+  "productId": "uuid",
+  "lob": "Travel",
+  "productType": "Annual",
+  "planType": "G"
+}</code></pre>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'POST' \
+  'http://localhost:8001/api/v1/quote/travel/create' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{ ... }'</code></pre>
+
+                    <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+                    <h3>Calculate Premium</h3>
+                    <span class="badge badge-post">POST</span> <code
+                        class="language-http">/api/v1/quote/travel/calculatePremium</code>
+                    <p>Calculates premium for a travel insurance quote.</p>
+                </section>
+
+                <!-- 4. Visa Quote -->
+                <section id="visa-quote">
+                    <h2>4. Visa Insurance</h2>
+                    <p>Endpoints for Visa insurance quotes (Visit Visa, etc.).</p>
+
+                    <h3>Create Quote</h3>
+                    <span class="badge badge-post">POST</span> <code
+                        class="language-http">/api/v1/quote/visa/create</code>
+                    <p>Values default to standard visa requirements.</p>
+
+                    <h4>Request Body</h4>
+                    <pre><code class="language-json">{
+  "insurerId": "uuid",
+  "productId": "uuid"
+}</code></pre>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'POST' \
+  'http://localhost:8001/api/v1/quote/visa/create' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{ "insurerId": "...", "productId": "..." }'</code></pre>
+
+                    <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+                    <h3>Calculate Premium</h3>
+                    <span class="badge badge-post">POST</span> <code
+                        class="language-http">/api/v1/quote/visa/calculatePremium</code>
+                </section>
+
+                <!-- 5. Home Quote -->
+                <section id="home-quote">
+                    <h2>5. Home Insurance</h2>
+                    <p>Property and Home contents insurance.</p>
+
+                    <h3>Create Quote</h3>
+                    <span class="badge badge-post">POST</span> <code
+                        class="language-http">/api/v1/quote/home/create</code>
+
+                    <h4>Request Body</h4>
+                    <pre><code class="language-json">{
+  "insurerId": "uuid",
+  "productId": "uuid"
+}</code></pre>
+
+                    <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+                    <h3>Calculate Premium</h3>
+                    <span class="badge badge-post">POST</span> <code
+                        class="language-http">/api/v1/quote/home/calculatePremium</code>
+                </section>
+
+                <!-- 6. Payment -->
+                <section id="payment">
+                    <h2>6. Payment</h2>
+                    <p>Process payments for bound policies.</p>
+
+                    <h3>Apply Payment</h3>
+                    <span class="badge badge-post">POST</span> <code class="language-http">/api/v1/payment/apply</code>
+                    <p>Apply a payment to a policy to enable issuance.</p>
+
+                    <h4>Request Body</h4>
+                    <pre><code class="language-json">{
+  "referenceNo": "Policy-123",
+  "amountPaid": 150.00,
+  "paymentDate": "2026-02-09 12:00:00",
+  "pgId": "HYPERPAY",
+  "method": "CreditCard"
+}</code></pre>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'POST' \
+  'http://localhost:8001/api/v1/payment/apply' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{ ... }'</code></pre>
+                </section>
+
+                <!-- 7. Insurer Management -->
+                <section id="insurer">
+                    <h2>7. Insurer Management</h2>
+                    <p>Manage insurer profiles and configurations.</p>
+
+                    <h3>List Insurers</h3>
+                    <span class="badge badge-get">GET</span> <code class="language-http">/api/v1/insurer/list</code>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'GET' \
+  'http://localhost:8001/api/v1/insurer/list' \
+  -H 'accept: application/json'</code></pre>
+
+                    <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+                    <h3>Create Insurer</h3>
+                    <span class="badge badge-post">POST</span> <code class="language-http">/api/v1/insurer</code>
+
+                    <h4>Request Body</h4>
+                    <pre><code class="language-json">{
+  "name": "Acme Insurance",
+  "configurations": {
+    "api_endpoint": "https://api.acme.com",
+    "auth_type": "oauth2"
+  }
+}</code></pre>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'POST' \
+  'http://localhost:8001/api/v1/insurer' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{ ... }'</code></pre>
+
+                    <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+                    <h3>Get Insurer</h3>
+                    <span class="badge badge-get">GET</span> <code class="language-http">/api/v1/insurer/{id}</code>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'GET' \
+  'http://localhost:8001/api/v1/insurer/{id}' \
+  -H 'accept: application/json'</code></pre>
+
+                    <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+                    <h3>Update Insurer</h3>
+                    <span class="badge badge-put">PUT</span> <code class="language-http">/api/v1/insurer/{id}</code>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'PUT' \
+  'http://localhost:8001/api/v1/insurer/{id}' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{ "name": "Updated Name" }'</code></pre>
+
+                    <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+                    <h3>Delete Insurer</h3>
+                    <span class="badge badge-delete">DELETE</span> <code
+                        class="language-http">/api/v1/insurer/{id}</code>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'DELETE' \
+  'http://localhost:8001/api/v1/insurer/{id}' \
+  -H 'accept: application/json'</code></pre>
+                </section>
+
+                <!-- 8. System Health -->
+                <section id="health">
+                    <h2>8. System Health</h2>
+                    <p>Check the operational status of the Domain Service.</p>
+
+                    <h3>Check Health</h3>
+                    <span class="badge badge-get">GET</span> <code class="language-http">/health</code>
+                    <p>Returns 200 OK if the service is up and running.</p>
+
+                    <h4>Test API</h4>
+                    <pre><code class="language-bash">curl -X 'GET' \
+  'http://localhost:8001/health' \
+  -H 'accept: application/json'</code></pre>
                 </section>
             </div>
         </main>
